@@ -67,4 +67,17 @@ public class MainController {
             tasks.add(t);
         }
     }
+    @FXML
+    private void onDeleteTask() {
+        Task selected = taskTable.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            System.out.println("No hay ninguna tarea seleccionada.");
+            return;
+        }
+
+        // Eliminarla de la lista
+        tasks.remove(selected);
+    }
+
 }

@@ -22,6 +22,7 @@
 
     <Button text="Nueva tarea" layoutX="20" layoutY="330" prefWidth="120" onAction="#onNewTask"/>
     <Button text="Editar" layoutX="160" layoutY="330" prefWidth="120"/>
-    <Button text="Eliminar" layoutX="300" layoutY="330" prefWidth="120"/>
+    <Button text="Eliminar" layoutX="300" layoutY="330" prefWidth="120" onAction="#onDeleteTask"/>
+
 
 </AnchorPane>
