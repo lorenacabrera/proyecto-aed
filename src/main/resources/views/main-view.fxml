@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane prefWidth="600" prefHeight="400"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.MainController">
+
+    <Label layoutX="20" layoutY="20" text="Gestor de Tareas" style="-fx-font-size: 20;" />
+
+    <TableView fx:id="taskTable" layoutX="20" layoutY="60" prefWidth="560" prefHeight="250">
+        <columns>
+            <TableColumn fx:id="titleColumn" text="Título" prefWidth="200"/>
+            <TableColumn fx:id="dueDateColumn" text="Fecha límite" prefWidth="150"/>
+            <TableColumn fx:id="statusColumn" text="Estado" prefWidth="200"/>
+        </columns>
+    </TableView>
+
+    <Button text="Nueva tarea" layoutX="20" layoutY="330" prefWidth="120"/>
+    <Button text="Editar" layoutX="160" layoutY="330" prefWidth="120"/>
+    <Button text="Eliminar" layoutX="300" layoutY="330" prefWidth="120"/>
+
+</AnchorPane>
