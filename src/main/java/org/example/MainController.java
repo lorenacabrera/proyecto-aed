@@ -80,4 +80,30 @@ public class MainController {
         tasks.remove(selected);
     }
 
+    @FXML
+    private void onEditTask() throws Exception {
+        Task selected = taskTable.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            System.out.println("No hay ninguna tarea seleccionada.");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/edit-task-view.fxml"));
+
+        Stage stage = new Stage();
+        stage.setTitle("Editar tarea");
+        stage.setScene(new Scene(loader.load()));
+
+        // Obtener controlador y enviarle la tarea seleccionada
+        EditTaskController controller = loader.getController();
+        controller.setTask(selected);
+
+        stage.showAndWait();
+
+        // Actualizar tabla después de editar
+        taskTable.refresh();
+    }
+
+
 }
