@@ -6,25 +6,16 @@
 <hibernate-configuration>
     <session-factory>
 
-        <!-- SQLite database -->
-        <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
-        <property name="hibernate.connection.url">jdbc:sqlite:tasks.db</property>
+        <!-- H2 database (archivo local) -->
+        <property name="hibernate.connection.driver_class">org.h2.Driver</property>
+        <property name="hibernate.connection.url">jdbc:h2:./database/tareas;MODE=SQLite</property>
 
-        <!-- Dialect -->
-        <property name="hibernate.dialect">org.example.sqlite.SQLiteDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
 
-
-        <!-- Create tables automatically -->
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <!-- SQL logging -->
         <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
 
-        <!-- JDBC batch size (optional) -->
-        <property name="hibernate.jdbc.batch_size">20</property>
-
-        <!-- Mapped entities -->
         <mapping class="org.example.Task"/>
 
     </session-factory>
