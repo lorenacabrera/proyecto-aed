@@ -18,6 +18,10 @@
 
         <!-- SQL logging -->
         <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- JDBC batch size (optional) -->
+        <property name="hibernate.jdbc.batch_size">20</property>
 
         <!-- Mapped entities -->
         <mapping class="org.example.Task"/>
