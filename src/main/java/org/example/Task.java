@@ -4,22 +4,21 @@ import java.time.LocalDate;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 
 public class Task {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
     private LocalDate dueDate;
     private boolean done;
 
-    public Task(){}
+    public Task() {}
 
-    // Constructor
     public Task(String title, String description, LocalDate dueDate, boolean done) {
         this.title = title;
         this.description = description;
@@ -27,7 +26,16 @@ public class Task {
         this.done = done;
     }
 
-    // Getters y Setters
+    // Getters y setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
