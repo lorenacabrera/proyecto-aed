@@ -1,13 +1,23 @@
 package org.example;
 
 import java.time.LocalDate;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "task")
 
 public class Task {
 
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+
+    private Long id;
     private String title;
     private String description;
     private LocalDate dueDate;
     private boolean done;
+
+    public Task(){}
 
     // Constructor
     public Task(String title, String description, LocalDate dueDate, boolean done) {
