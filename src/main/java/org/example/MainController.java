@@ -28,6 +28,8 @@ public class MainController {
 
     private ObservableList<Task> tasks;
 
+    private TaskDAO taskDAO = new TaskDAO();
+
     @FXML
     public void initialize() {
 
@@ -37,10 +39,12 @@ public class MainController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Lista de tareas de ejemplo
-        tasks = FXCollections.observableArrayList(
-                new Task("Comprar pan", "Ir a la panadería", LocalDate.now(), false),
-                new Task("Estudiar JavaFX", "Hacer el proyecto", LocalDate.now().plusDays(1), true)
-        );
+        tasks = FXCollections.observableArrayList(taskDAO.findAll());
+
+        if (tasks.isEmpty()) {
+            tasks.add(new Task("Comprar pan", "Ir a la panadería", LocalDate.now(), false));
+            tasks.add(new Task("Estudiar JavaFX", "Hacer el proyecto", LocalDate.now().plusDays(1), true));
+        }
 
         // Asignar la lista a la tabla
         taskTable.setItems(tasks);
@@ -65,6 +69,7 @@ public class MainController {
         // Si el usuario pulsó Guardar, añadir la tarea
         if (t != null) {
             tasks.add(t);
+            taskDAO.save(t);
         }
     }
     @FXML
@@ -77,6 +82,7 @@ public class MainController {
         }
 
         // Eliminarla de la lista
+        taskDAO.delete(selected);
         tasks.remove(selected);
     }
 
@@ -103,6 +109,7 @@ public class MainController {
 
         // Actualizar tabla después de editar
         taskTable.refresh();
+        taskDAO.update(selected);
     }
 
 
