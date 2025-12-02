@@ -5,13 +5,13 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class TaskDAO {
+public class CategoriaDAO {
 
-    public void save(Task t) {
+    public void save(Categoria c) {
         Transaction tx = null;
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
             tx = s.beginTransaction();
-            s.persist(t);
+            s.persist(c);
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
@@ -19,24 +19,24 @@ public class TaskDAO {
         }
     }
 
-    public Task findById(Long id) {
+    public Categoria findById(Long id) {
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            return s.get(Task.class, id);
+            return s.get(Categoria.class, id);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<Task> findAll() {
+    public List<Categoria> findAll() {
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            return s.createQuery("from Task").list();
+            return s.createQuery("from Categoria").list();
         }
     }
 
-    public void update(Task t) {
+    public void update(Categoria c) {
         Transaction tx = null;
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
             tx = s.beginTransaction();
-            s.merge(t);
+            s.merge(c);
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
@@ -44,11 +44,11 @@ public class TaskDAO {
         }
     }
 
-    public void delete(Task t) {
+    public void delete(Categoria c) {
         Transaction tx = null;
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
             tx = s.beginTransaction();
-            s.remove(s.contains(t) ? t : s.merge(t));
+            s.remove(s.contains(c) ? c : s.merge(c));
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
