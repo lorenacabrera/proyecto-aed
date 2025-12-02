@@ -9,14 +9,24 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            return new Configuration().configure().buildSessionFactory();
-        } catch (Exception e) {
-            System.out.println("Error creando SessionFactory");
-            throw new RuntimeException(e);
+            Configuration cfg = new Configuration();
+            cfg.configure("hibernate.cfg.xml"); // archivo en src/main/resources
+            // Si prefieres, puedes programáticamente añadir clases:
+            cfg.addAnnotatedClass(Task.class);
+            cfg.addAnnotatedClass(Categoria.class);
+            cfg.addAnnotatedClass(Usuario.class);
+            return cfg.buildSessionFactory();
+        } catch (Throwable ex) {
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
         }
     }
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+
+    public static void shutdown() {
+        getSessionFactory().close();
     }
 }
