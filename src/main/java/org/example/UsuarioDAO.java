@@ -2,12 +2,20 @@ package org.example;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class UsuarioDAO {
-
-    public void save(Usuario u) {
+    public List<Usuario> findAll() {
+        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
+            return s.createQuery("from Usuario", Usuario.class).list();
+        }
+    }
+    public Usuario findById(Long id) {
+        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
+            return s.get(Usuario.class, id);
+        }
+    }
+    public void save(Usuario u ) {
         Transaction tx = null;
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
             tx = s.beginTransaction();
@@ -16,19 +24,6 @@ public class UsuarioDAO {
         } catch (Exception e) {
             if (tx != null) tx.rollback();
             throw e;
-        }
-    }
-
-    public Usuario findById(Long id) {
-        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            return s.get(Usuario.class, id);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Usuario> findAll() {
-        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            return s.createQuery("from Usuario").list();
         }
     }
 

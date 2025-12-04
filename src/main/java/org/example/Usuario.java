@@ -1,46 +1,35 @@
 package org.example;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "usuario")
-public class Usuario {
-
+@Table(name = "usuarios")
+public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable=false, unique=true)
     private String username;
 
-    private String email;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tareas = new ArrayList<>();
+    @Column
+    private String nombre; // opcional
 
     public Usuario() {}
-
-    public Usuario(String username, String email) {
-        this.username = username;
-        this.email = email;
+    public Usuario(String username, String nombre) {
+        this.username = username; this.nombre = nombre;
     }
 
-    // getters y setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public List<Task> getTareas() { return tareas; }
-    public void setTareas(List<Task> tareas) { this.tareas = tareas; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
     @Override
-    public String toString() {
-        return username;
-    }
+    public String toString() { return username; } // útil en ComboBox
 }

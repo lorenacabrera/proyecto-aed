@@ -1,6 +1,8 @@
 package org.example;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -19,7 +21,25 @@ public class NewTaskController {
     @FXML
     private DatePicker dueDatePicker;
 
+    @FXML
+    private ComboBox<Categoria> categoriaCombo;
+
+    @FXML
+    private ComboBox<Usuario> usuarioCombo;
+
     private Task task;
+    private ObservableList<Categoria> categorias;
+    private ObservableList<Usuario> usuarios;
+
+    public void setCategorias(ObservableList<Categoria> categorias) {
+        this.categorias = categorias;
+        categoriaCombo.setItems(categorias);
+    }
+
+    public void setUsuarios(ObservableList<Usuario> usuarios) {
+        this.usuarios = usuarios;
+        usuarioCombo.setItems(usuarios);
+    }
 
     @FXML
     private void onSave() {
@@ -33,8 +53,9 @@ public class NewTaskController {
         }
 
         task = new Task(title, description, dueDate, false);
+        task.setCategoria(categoriaCombo.getValue());
+        task.setUsuario(usuarioCombo.getValue());
 
-        // Cierra la ventana
         Stage stage = (Stage) titleField.getScene().getWindow();
         stage.close();
     }
@@ -42,7 +63,6 @@ public class NewTaskController {
     @FXML
     private void onCancel() {
         task = null;
-
         Stage stage = (Stage) titleField.getScene().getWindow();
         stage.close();
     }

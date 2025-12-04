@@ -7,15 +7,9 @@ import java.util.List;
 
 public class CategoriaDAO {
 
-    public void save(Categoria c) {
-        Transaction tx = null;
+    public List<Categoria> findAll() {
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            tx = s.beginTransaction();
-            s.persist(c);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            throw e;
+            return s.createQuery("from Categoria", Categoria.class).list();
         }
     }
 
@@ -25,10 +19,15 @@ public class CategoriaDAO {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Categoria> findAll() {
+    public void save(Categoria c) {
+        Transaction tx = null;
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            return s.createQuery("from Categoria").list();
+            tx = s.beginTransaction();
+            s.persist(c);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw e;
         }
     }
 

@@ -14,15 +14,16 @@
 
     <TableView fx:id="taskTable" layoutX="20" layoutY="60" prefWidth="560" prefHeight="250">
         <columns>
-            <TableColumn fx:id="titleColumn" text="Título" prefWidth="200"/>
-            <TableColumn fx:id="dueDateColumn" text="Fecha límite" prefWidth="150"/>
-            <TableColumn fx:id="statusColumn" text="Estado" prefWidth="200"/>
+            <TableColumn fx:id="titleColumn" text="Título" prefWidth="150"/>
+            <TableColumn fx:id="dueDateColumn" text="Fecha límite" prefWidth="120"/>
+            <TableColumn fx:id="statusColumn" text="Estado" prefWidth="100"/>
+            <TableColumn fx:id="categoriaColumn" text="Categoría" prefWidth="120"/>
+            <TableColumn fx:id="usuarioColumn" text="Usuario" prefWidth="120"/>
         </columns>
     </TableView>
 
     <Button text="Nueva tarea" layoutX="20" layoutY="330" prefWidth="120" onAction="#onNewTask"/>
     <Button text="Editar" layoutX="160" layoutY="330" prefWidth="120" onAction="#onEditTask"/>
     <Button text="Eliminar" layoutX="300" layoutY="330" prefWidth="120" onAction="#onDeleteTask"/>
-
 
 </AnchorPane>

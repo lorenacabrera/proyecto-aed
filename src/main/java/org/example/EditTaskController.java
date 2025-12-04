@@ -1,13 +1,9 @@
 package org.example;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-import java.time.LocalDate;
 
 public class EditTaskController {
 
@@ -23,14 +19,37 @@ public class EditTaskController {
     @FXML
     private CheckBox doneCheckBox;
 
+    @FXML
+    private ComboBox<Categoria> categoriaCombo;
+
+    @FXML
+    private ComboBox<Usuario> usuarioCombo;
+
     private Task task;
 
-    public void setTask(Task t) {
-        this.task = t;
-        titleField.setText(t.getTitle());
-        descriptionField.setText(t.getDescription());
-        dueDatePicker.setValue(t.getDueDate());
-        doneCheckBox.setSelected(t.isDone());
+    private ObservableList<Categoria> categorias;
+    private ObservableList<Usuario> usuarios;
+
+    public void setCategorias(ObservableList<Categoria> categorias) {
+        this.categorias = categorias;
+        categoriaCombo.setItems(categorias);
+    }
+
+    public void setUsuarios(ObservableList<Usuario> usuarios) {
+        this.usuarios = usuarios;
+        usuarioCombo.setItems(usuarios);
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+
+        // Cargar valores actuales en el formulario
+        titleField.setText(task.getTitle());
+        descriptionField.setText(task.getDescription());
+        dueDatePicker.setValue(task.getDueDate());
+        doneCheckBox.setSelected(task.isDone());
+        categoriaCombo.setValue(task.getCategoria());
+        usuarioCombo.setValue(task.getUsuario());
     }
 
     @FXML
@@ -39,6 +58,8 @@ public class EditTaskController {
         task.setDescription(descriptionField.getText());
         task.setDueDate(dueDatePicker.getValue());
         task.setDone(doneCheckBox.isSelected());
+        task.setCategoria(categoriaCombo.getValue());
+        task.setUsuario(usuarioCombo.getValue());
 
         Stage stage = (Stage) titleField.getScene().getWindow();
         stage.close();

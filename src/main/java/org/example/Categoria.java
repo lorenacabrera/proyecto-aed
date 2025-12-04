@@ -1,23 +1,20 @@
 package org.example;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "categorias")
+public class Categoria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String nombre;
 
     private String descripcion;
-
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tareas = new ArrayList<>();
 
     public Categoria() {}
 
@@ -26,7 +23,10 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    // getters y setters
+    public Categoria(String nombre) {
+        this.nombre = nombre;
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -35,9 +35,6 @@ public class Categoria {
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-
-    public List<Task> getTareas() { return tareas; }
-    public void setTareas(List<Task> tareas) { this.tareas = tareas; }
 
     @Override
     public String toString() {

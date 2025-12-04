@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -26,91 +27,119 @@ public class MainController {
     @FXML
     private TableColumn<Task, String> statusColumn;
 
+    @FXML
+    private TableColumn<Task, String> categoriaColumn;
+
+    @FXML
+    private TableColumn<Task, String> usuarioColumn;
+
     private ObservableList<Task> tasks;
 
-    private TaskDAO taskDAO = new TaskDAO();
+    private final TaskDAO taskDAO = new TaskDAO();
+    private final CategoriaDAO categoriaDAO = new CategoriaDAO();
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     @FXML
     public void initialize() {
 
-        // Vincular columnas con las propiedades de la clase Task
+        // Columnas básicas
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Lista de tareas de ejemplo
+        // Columna Categoría
+        categoriaColumn.setCellValueFactory(cellData ->
+                javafx.beans.binding.Bindings.createStringBinding(
+                        () -> {
+                            Categoria c = cellData.getValue().getCategoria();
+                            return c != null ? c.getNombre() : "";
+                        }
+                )
+        );
+
+        // Columna Usuario
+        usuarioColumn.setCellValueFactory(cellData ->
+                javafx.beans.binding.Bindings.createStringBinding(
+                        () -> {
+                            Usuario u = cellData.getValue().getUsuario();
+                            return u != null ? u.getUsername() : "";
+                        }
+                )
+        );
+
+        // Cargar datos desde BD
         tasks = FXCollections.observableArrayList(taskDAO.findAll());
-
-        if (tasks.isEmpty()) {
-            tasks.add(new Task("Comprar pan", "Ir a la panadería", LocalDate.now(), false));
-            tasks.add(new Task("Estudiar JavaFX", "Hacer el proyecto", LocalDate.now().plusDays(1), true));
-        }
-
-        // Asignar la lista a la tabla
         taskTable.setItems(tasks);
     }
 
     @FXML
     private void onNewTask() throws Exception {
 
-        // Cargar la ventana de nueva tarea
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/new-task-view.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Nueva tarea");
         stage.setScene(new Scene(loader.load()));
 
-        // Mostrar como ventana modal
+        NewTaskController controller = loader.getController();
+
+        controller.setCategorias(FXCollections.observableArrayList(categoriaDAO.findAll()));
+        controller.setUsuarios(FXCollections.observableArrayList(usuarioDAO.findAll()));
+
         stage.showAndWait();
 
-        // Obtener el resultado del controlador hijo
-        NewTaskController controller = loader.getController();
         Task t = controller.getTask();
 
-        // Si el usuario pulsó Guardar, añadir la tarea
         if (t != null) {
-            tasks.add(t);
             taskDAO.save(t);
+            tasks.add(t);
         }
     }
+
     @FXML
     private void onDeleteTask() {
         Task selected = taskTable.getSelectionModel().getSelectedItem();
 
         if (selected == null) {
-            System.out.println("No hay ninguna tarea seleccionada.");
+            mostrarAlerta("Debes seleccionar una tarea.");
             return;
         }
 
-        // Eliminarla de la lista
         taskDAO.delete(selected);
         tasks.remove(selected);
     }
 
     @FXML
     private void onEditTask() throws Exception {
+
         Task selected = taskTable.getSelectionModel().getSelectedItem();
 
         if (selected == null) {
-            System.out.println("No hay ninguna tarea seleccionada.");
+            mostrarAlerta("Debes seleccionar una tarea.");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/edit-task-view.fxml"));
-
         Stage stage = new Stage();
         stage.setTitle("Editar tarea");
         stage.setScene(new Scene(loader.load()));
 
-        // Obtener controlador y enviarle la tarea seleccionada
         EditTaskController controller = loader.getController();
+
+        controller.setCategorias(FXCollections.observableArrayList(categoriaDAO.findAll()));
+        controller.setUsuarios(FXCollections.observableArrayList(usuarioDAO.findAll()));
         controller.setTask(selected);
 
         stage.showAndWait();
 
-        // Actualizar tabla después de editar
-        taskTable.refresh();
         taskDAO.update(selected);
+        taskTable.refresh();
     }
 
-
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 }
+
