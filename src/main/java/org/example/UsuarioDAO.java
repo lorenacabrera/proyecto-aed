@@ -2,52 +2,39 @@ package org.example;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 import java.util.List;
 
 public class UsuarioDAO {
+
+    public void save(Usuario usuario) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(usuario);
+        tx.commit();
+        session.close();
+    }
+
+    public void update(Usuario usuario) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.update(usuario);
+        tx.commit();
+        session.close();
+    }
+
+    public void delete(Usuario usuario) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.delete(usuario);
+        tx.commit();
+        session.close();
+    }
+
     public List<Usuario> findAll() {
-        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            return s.createQuery("from Usuario", Usuario.class).list();
-        }
-    }
-    public Usuario findById(Long id) {
-        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            return s.get(Usuario.class, id);
-        }
-    }
-    public void save(Usuario u ) {
-        Transaction tx = null;
-        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            tx = s.beginTransaction();
-            s.persist(u);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-    }
-
-    public void update(Usuario u) {
-        Transaction tx = null;
-        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            tx = s.beginTransaction();
-            s.merge(u);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-    }
-
-    public void delete(Usuario u) {
-        Transaction tx = null;
-        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-            tx = s.beginTransaction();
-            s.remove(s.contains(u) ? u : s.merge(u));
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            throw e;
-        }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Usuario> list = session.createQuery("from Usuario", Usuario.class).list();
+        session.close();
+        return list;
     }
 }

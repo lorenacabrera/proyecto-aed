@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane prefWidth="500" prefHeight="400"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.UsuarioController">
+
+    <Label layoutX="20" layoutY="20" text="Gestión de Usuarios" style="-fx-font-size: 20;" />
+
+    <TableView fx:id="tablaUsuarios" layoutX="20" layoutY="60" prefWidth="460" prefHeight="250">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>
+            <TableColumn fx:id="colUsername" text="Usuario" prefWidth="250"/>
+        </columns>
+    </TableView>
+
+    <Button text="Nuevo" layoutX="20" layoutY="330" prefWidth="100" onAction="#onNuevo"/>
+    <Button text="Editar" layoutX="140" layoutY="330" prefWidth="100" onAction="#onEditar"/>
+    <Button text="Eliminar" layoutX="260" layoutY="330" prefWidth="100" onAction="#onEliminar"/>
+
+</AnchorPane>
