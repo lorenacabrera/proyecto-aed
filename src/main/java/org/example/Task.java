@@ -13,8 +13,6 @@ public class Task {
 
     private String title;
     private String description;
-
-    // el convertidor LocalDateAttributeConverter se aplicará automáticamente si lo añadiste
     private LocalDate dueDate;
     private boolean done;
 
@@ -35,7 +33,6 @@ public class Task {
         this.done = done;
     }
 
-    // Getters y Setters (inc. id, categoria, usuario)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
